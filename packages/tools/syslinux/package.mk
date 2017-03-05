@@ -18,14 +18,12 @@
 
 PKG_NAME="syslinux"
 PKG_VERSION="6.03"
-PKG_REV="1"
 PKG_ARCH="i386 x86_64"
 PKG_LICENSE="GPL"
 PKG_SITE="http://syslinux.zytor.com/"
 PKG_URL="http://www.kernel.org/pub/linux/utils/boot/$PKG_NAME/$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_DEPENDS_HOST="util-linux:host"
 PKG_DEPENDS_TARGET="toolchain util-linux e2fsprogs syslinux:host"
-PKG_PRIORITY="optional"
 PKG_SECTION="tools"
 PKG_SHORTDESC="syslinux: Linux bootloader collection"
 PKG_LONGDESC="The SYSLINUX project covers lightweight linux bootloaders for floppy media (syslinux), network booting (pxelinux) and bootable el-torito cd-roms (isolinux)."
@@ -75,10 +73,15 @@ makeinstall_host() {
     cp bios/mtools/syslinux $ROOT/$TOOLCHAIN/bin/syslinux.mtools
 
   mkdir -p $ROOT/$TOOLCHAIN/share/syslinux
+    cp bios/com32/menu/vesamenu.c32 $ROOT/$TOOLCHAIN/share/syslinux
+    cp bios/com32/lib/libcom32.c32 $ROOT/$TOOLCHAIN/share/syslinux
+    cp bios/com32/libutil/libutil.c32 $ROOT/$TOOLCHAIN/share/syslinux
     cp bios/mbr/mbr.bin $ROOT/$TOOLCHAIN/share/syslinux
     cp bios/mbr/gptmbr.bin $ROOT/$TOOLCHAIN/share/syslinux
     cp efi64/efi/syslinux.efi $ROOT/$TOOLCHAIN/share/syslinux/bootx64.efi
     cp efi64/com32/elflink/ldlinux/ldlinux.e64  $ROOT/$TOOLCHAIN/share/syslinux
+    cp efi32/efi/syslinux.efi $ROOT/$TOOLCHAIN/share/syslinux/bootia32.efi
+    cp efi32/com32/elflink/ldlinux/ldlinux.e32  $ROOT/$TOOLCHAIN/share/syslinux
 }
 
 makeinstall_target() {
@@ -94,4 +97,6 @@ makeinstall_target() {
     cp bios/mbr/gptmbr.bin $INSTALL/usr/share/syslinux
     cp efi64/efi/syslinux.efi $INSTALL/usr/share/syslinux/bootx64.efi
     cp efi64/com32/elflink/ldlinux/ldlinux.e64  $INSTALL/usr/share/syslinux
+    cp efi32/efi/syslinux.efi $INSTALL/usr/share/syslinux/bootia32.efi
+    cp efi32/com32/elflink/ldlinux/ldlinux.e32  $INSTALL/usr/share/syslinux
 }

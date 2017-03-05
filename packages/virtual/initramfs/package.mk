@@ -18,13 +18,11 @@
 
 PKG_NAME="initramfs"
 PKG_VERSION=""
-PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.openelec.tv"
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain libc:init busybox:init linux:init plymouth-lite:init diskdev_cmds:init util-linux:init e2fsprogs:init dosfstools:init"
-PKG_PRIORITY="optional"
+PKG_DEPENDS_TARGET="toolchain libc:init busybox:init linux:init plymouth-lite:init diskdev_cmds:init util-linux:init e2fsprogs:init dosfstools:init systemd:init"
 PKG_SECTION="virtual"
 PKG_SHORTDESC="initramfs: Metapackage for installing initramfs"
 PKG_LONGDESC="debug is a Metapackage for installing initramfs"
@@ -42,12 +40,24 @@ if [ "$INITRAMFS_PARTED_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET parted:init"
 fi
 
+if [ "$PROJECT" = "Gamegirl" ]; then
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET gamegirl-screen:init"
+fi
+
 post_install() {
-  cd $ROOT/$BUILD/initramfs
+  ( cd $ROOT/$BUILD/initramfs
     if [ "$TARGET_ARCH" = "x86_64" -o "$TARGET_ARCH" = "powerpc64" ]; then
-      ln -s /lib $ROOT/$BUILD/initramfs/lib64
+      ln -sf /usr/lib $ROOT/$BUILD/initramfs/lib64
+      mkdir -p $ROOT/$BUILD/initramfs/usr
+      ln -sf /usr/lib $ROOT/$BUILD/initramfs/usr/lib64
     fi
+
+    ln -sf /usr/lib $ROOT/$BUILD/initramfs/lib
+    ln -sf /usr/bin $ROOT/$BUILD/initramfs/bin
+    ln -sf /usr/sbin $ROOT/$BUILD/initramfs/sbin
+
     mkdir -p $ROOT/$BUILD/image/
-    find . | cpio -H newc -ov -R 0:0 > $ROOT/$BUILD/image/initramfs.cpio
-  cd -
+    fakeroot -- sh -c \
+      "mkdir -p dev; mknod -m 600 dev/console c 5 1; find . | cpio -H newc -ov -R 0:0 > $ROOT/$BUILD/image/initramfs.cpio"
+  )
 }

@@ -21,24 +21,24 @@
 ################################################################################
 
   # create directories
-  /bin/busybox mkdir -p /dev
-  /bin/busybox mkdir -p /proc
-  /bin/busybox mkdir -p /sys
-  /bin/busybox mkdir -p /tmp
-  /bin/busybox mkdir -p /flash
-  /bin/busybox mkdir -p /sysroot
-  /bin/busybox mkdir -p /storage
+  /usr/bin/busybox mkdir -p /dev
+  /usr/bin/busybox mkdir -p /proc
+  /usr/bin/busybox mkdir -p /sys
+  /usr/bin/busybox mkdir -p /tmp
+  /usr/bin/busybox mkdir -p /flash
+  /usr/bin/busybox mkdir -p /sysroot
+  /usr/bin/busybox mkdir -p /storage
 
   # mount all needed special filesystems
-  /bin/busybox mount -t devtmpfs devtmpfs /dev
-  /bin/busybox mount -t proc proc /proc
-  /bin/busybox mount -t sysfs sysfs /sys
+  /usr/bin/busybox mount -t devtmpfs devtmpfs /dev
+  /usr/bin/busybox mount -t proc proc /proc
+  /usr/bin/busybox mount -t sysfs sysfs /sys
 
   # common functions
   . /functions
 
   # set needed variables
-  MODULE_DIR=/lib/modules
+  MODULE_DIR=/usr/lib/modules
 
   UPDATE_ROOT=/storage/.update
   UPDATE_DIR="$UPDATE_ROOT"
@@ -259,19 +259,19 @@
     ISCSI_DEV="${1##*,}"
     ISCSI_OPTIONS="${1%,*}"
 
-    if [ ! -f "/sbin/iscsistart" ]; then
+    if [ ! -f "/usr/sbin/iscsistart" ]; then
       error "iscsistart" "iSCSI support not available"
     fi
 
     if [ "$ISCSI_OPTIONS" = "auto" ]; then
       progress "Network configuration based on iBFT"
-      /sbin/iscsistart -N >&$SILENT_OUT 2>&1 || \
+      /usr/sbin/iscsistart -N >&$SILENT_OUT 2>&1 || \
         error "iscsistart" "Unable to configure network"
       progress "iSCSI auto connect based on iBFT"
-      /sbin/iscsistart -b >&$SILENT_OUT 2>&1 || \
+      /usr/sbin/iscsistart -b >&$SILENT_OUT 2>&1 || \
         error "iscsistart" "Unable to auto connect"
     else
-      /sbin/iscsistart $(get_iscsistart_options "$ISCSI_OPTIONS") >&$SILENT_OUT 2>&1 || \
+      /usr/sbin/iscsistart $(get_iscsistart_options "$ISCSI_OPTIONS") >&$SILENT_OUT 2>&1 || \
         error "iscsistart" "Unable to connect to ISCSI target"
     fi
 
@@ -859,7 +859,7 @@
     mount --move /flash /sysroot/flash
     mount --move /storage /sysroot/storage
 
-    if [ ! -d "/sysroot/lib/modules/$(uname -r)/" -a -f "/sysroot/usr/lib/systemd/systemd" ]; then
+    if [ ! -d "/sysroot/usr/lib/modules/$(uname -r)/" -a -f "/sysroot/usr/lib/systemd/systemd" ]; then
       echo ""
       echo "NEVER TOUCH boot= in extlinux.conf / cmdline.txt!"
       echo "If you don't know what you are doing,"
@@ -905,10 +905,10 @@
     fi
   done
   # move some special filesystems
-  /bin/busybox mount --move /dev /sysroot/dev
-  /bin/busybox mount --move /proc /sysroot/proc
-  /bin/busybox mount --move /sys /sysroot/sys
-  /bin/busybox rm -fr /tmp
+  /usr/bin/busybox mount --move /dev /sysroot/dev
+  /usr/bin/busybox mount --move /proc /sysroot/proc
+  /usr/bin/busybox mount --move /sys /sysroot/sys
+  /usr/bin/busybox rm -fr /tmp
 
   # tell OE settings addon to disable updates
   if [ "$UPDATE_DISABLED" = "yes" ] ; then
@@ -933,6 +933,6 @@
   fi
 
   # switch to new sysroot and start real init
-  exec /bin/busybox switch_root /sysroot /usr/lib/systemd/systemd $INIT_ARGS $INIT_UNIT
+  exec /usr/bin/busybox switch_root /sysroot /usr/lib/systemd/systemd $INIT_ARGS $INIT_UNIT
 
   error "switch_root" "Error in initramfs. Could not switch to new root"

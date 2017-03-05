@@ -6,30 +6,8 @@
   # generated code.
     case $TARGET_ARCH in
       arm)
-        # TARGET_CPU:
-        # arm2 arm250 arm3 arm6 arm60 arm600 arm610 arm620 arm7 arm7m arm7d
-        # arm7dm arm7di arm7dmi arm70 arm700 arm700i arm710 arm710c
-        # arm7100 arm720 arm7500 arm7500fe arm7tdmi arm7tdmi-s arm710t
-        # arm720t arm740t strongarm strongarm110 strongarm1100
-        # strongarm1110 arm8 arm810 arm9 arm9e arm920 arm920t arm922t
-        # arm946e-s arm966e-s arm968e-s arm926ej-s arm940t arm9tdmi
-        # arm10tdmi arm1020t arm1026ej-s arm10e arm1020e arm1022e
-        # arm1136j-s arm1136jf-s mpcore mpcorenovfp arm1156t2-s
-        # arm1176jz-s arm1176jzf-s cortex-a8 cortex-a9 cortex-r4
-        # cortex-r4f cortex-m3 cortex-m1 xscale iwmmxt iwmmxt2 ep9312.
         TARGET_CPU="cortex-a9"
-
-        # TARGET_FLOAT:
-        # Specifies which floating-point ABI to use. Permissible values are:
-        # soft softfp hard
         TARGET_FLOAT="hard"
-
-        # TARGET_FPU:
-        # This specifies what floating point hardware (or hardware emulation) is
-        # available on the target. Permissible names are:
-        # fpa fpe2 fpe3 maverick vfp vfpv3 vfpv3-fp16 vfpv3-d16 vfpv3-d16-fp16
-        # vfpv3xd vfpv3xd-fp16 neon neon-fp16 vfpv4 vfpv4-d16 fpv4-sp-d16
-        # neon-vfpv4.
         TARGET_FPU="neon"
         ;;
     esac
@@ -41,8 +19,12 @@
     UBOOT_VERSION="imx6-cuboxi"
 
   # Configuration for u-boot
-    UBOOT_CONFIG="mx6_cubox-i_config"
-    UBOOT_CONFIG="$UBOOT_CONFIG matrix"
+    UBOOT_CONFIG="mx6_cubox-i_config \
+                  matrix"
+
+  # for second u-boot
+    UBOOT_CONFIG_V2="udoo_config   \
+                     tbs2910_config"
 
   # Target Configfile for u-boot
     UBOOT_CONFIGFILE=""
@@ -51,44 +33,52 @@
     KERNEL_TARGET="zImage"
 
   # Kernel extra targets to build
-    KERNEL_UBOOT_EXTRA_TARGET="imx6q-cubox-i.dtb imx6dl-cubox-i.dtb"
-    KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET imx6q-hummingboard.dtb imx6dl-hummingboard.dtb"
-    KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET imx6q-hummingboard2.dtb imx6dl-hummingboard2.dtb"
-    KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET imx6q-tbs2910.dtb"
-    KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET imx6q-udoo.dtb imx6dl-udoo.dtb"
-    KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET imx6q-udoo-15lvds.dtb imx6q-udoo-7lvds.dtb"
-    KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET imx6dl-udoo-15lvds.dtb imx6dl-udoo-7lvds.dtb"
+    KERNEL_UBOOT_EXTRA_TARGET="imx6q-cubox-i.dtb       imx6dl-cubox-i.dtb       \
+                               imx6q-hummingboard.dtb  imx6dl-hummingboard.dtb  \
+                               imx6q-hummingboard2.dtb imx6dl-hummingboard2.dtb \
+                               imx6q-tbs2910.dtb                                \
+                               imx6q-udoo.dtb          imx6dl-udoo.dtb          \
+                               imx6q-udoo-7lvds.dtb    imx6dl-udoo-7lvds.dtb    \
+                               imx6q-udoo-15lvds.dtb   imx6dl-udoo-15lvds.dtb"
 
   # Additional kernel make parameters (for example to specify the u-boot loadaddress)
     KERNEL_MAKE_EXTRACMD=""
 
   # Kernel to use.
   # default is 4.4 from xbian
-    if [ -z "$LINUX_VERSION" -o "$LINUX_VERSION" != "sr-3.14" ]; then
-      LINUX="imx6-4.4-xbian"
+    if [ "$LINUX_VERSION" = "sr-3.14" ]; then
+      LINUX="imx6-3.14-sr"
+
+      KERNEL_UBOOT_EXTRA_TARGET="$KERNEL_UBOOT_EXTRA_TARGET \
+             imx6q-cubox-i-som-v15.dtb       imx6dl-cubox-i-som-v15.dtb      \
+             imx6q-hummingboard-som-v15.dtb  imx6dl-hummingboard-som-v15.dtb \
+             imx6q-hummingboard2-som-v15.dtb imx6dl-hummingboard2-som-v15.dtb"
+
+      # OpenGL-ES implementation to use
+      OPENGLES="imx-gpu-viv"
+    elif [ "$LINUX_VERSION" = "xbian-4.8" ]; then
+      LINUX="imx6-4.8-xbian"
+      LIBCEC_TYPE="xbian"
+
+      # OpenGL-ES implementation to use
+      OPENGLES="gpu-viv-bin-mx6q"
     else
-      LINUX="imx6"
+      LINUX="imx6-4.4-xbian"
+      LIBCEC_TYPE="xbian"
+
+      # OpenGL-ES implementation to use
+      OPENGLES="gpu-viv-bin-mx6q"
     fi
 
 ################################################################################
 # setup build defaults
 ################################################################################
 
-  # Build optimizations (size/normal)
-    OPTIMIZATIONS="size"
-
   # Project CFLAGS
     PROJECT_CFLAGS=""
 
-  # LTO (Link Time Optimization) support
-    LTO_SUPPORT="yes"
-
-  # GOLD (Google Linker) support
-    GOLD_SUPPORT="yes"
-
   # SquashFS compression method (gzip / lzo / xz)
-    SQUASHFS_COMPRESSION="gzip"
-
+    SQUASHFS_COMPRESSION="lzo"
 
 ################################################################################
 # setup project defaults
@@ -99,13 +89,6 @@
 
   # OpenGL(X) implementation to use (no / mesa)
     OPENGL="no"
-
-  # OpenGL-ES implementation to use (no / bcm2835-driver / imx-gpu-viv)
-  	if [ "$LINUX" = "imx6" ]; then
-      OPENGLES="imx-gpu-viv"
-    else
-      OPENGLES="gpu-viv-bin-mx6q"
-    fi
 
   # include uvesafb support (yes / no)
     UVESAFB_SUPPORT="no"
@@ -131,11 +114,7 @@
   # for a list of additional drivers see packages/linux-drivers
   # Space separated list is supported,
   # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-    if [ "$LINUX" = "imx6" ]; then
-      ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8188EU dvbhdhomerun"
-    else
-      ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS"
-    fi
+    ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS"
 
   # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
   # Space separated list is supported,
@@ -144,9 +123,6 @@
 
   # build and install ATV IR remote support (yes / no)
     ATVCLIENT_SUPPORT="no"
-
-  # build and install IRServer IR/LCD support (yes / no)
-    IRSERVER_SUPPORT="no"
 
   # build with swap support (yes / no)
     SWAP_SUPPORT="no"
@@ -160,3 +136,5 @@
   # build with installer (yes / no)
     INSTALLER_SUPPORT="no"
 
+  # override some playlist core assignation
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel-n64/mupen64plus}"

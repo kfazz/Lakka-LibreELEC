@@ -31,15 +31,12 @@ PKG_LONGDESC="Tini is the simplest init you could think of"
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
+PKG_CMAKE_TARGET_OPTS="-DMINIMAL=ON"
+
 PKG_MAKE_TARGET_OPTS="tini-static"
 
 pre_configure_target(){
   sed -i "s|@tini_VERSION_GIT@| - git.${PKG_VERSION}|" $ROOT/$PKG_BUILD/src/tiniConfig.h.in
-}
-
-configure_target() {
-  cmake -DMINIMAL=ON \
-        ..
 }
 
 makeinstall_target() {

@@ -1,5 +1,5 @@
 ################################################################################
-#      This file is part of LibreELEC - http://www.libreelec.tv
+#      This file is part of LibreELEC - https://libreelec.tv
 #      Copyright (C) 2009-2016 Lukas Rusak (lrusak@libreelec.tv)
 #
 #  LibreELEC is free software: you can redistribute it and/or modify
@@ -17,14 +17,12 @@
 ################################################################################
 
 PKG_NAME="runc"
-PKG_VERSION="2f7393a"
-PKG_REV="1"
+PKG_VERSION="9df8b30"
 PKG_ARCH="any"
 PKG_LICENSE="APL"
 PKG_SITE="https://github.com/opencontainers/runc"
 PKG_URL="https://github.com/opencontainers/runc/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain go:host"
-PKG_PRIORITY="optional"
 PKG_SECTION="system"
 PKG_SHORTDESC="runc is a CLI tool for spawning and running containers according to the OCI specification"
 PKG_LONGDESC="runc is a CLI tool for spawning and running containers according to the OCI specification"
@@ -48,6 +46,9 @@ pre_make_target() {
          export GOARM=7
          ;;
       esac
+      ;;
+    aarch64)
+      export GOARCH=arm64
       ;;
   esac
 

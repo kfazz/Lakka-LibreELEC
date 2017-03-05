@@ -1,3 +1,9 @@
+# LTO (Link Time Optimization) support
+  LTO_SUPPORT="yes"
+
+# GOLD (Google Linker) support
+  GOLD_SUPPORT="yes"
+
 # Name of the Distro to build (full name, without special characters)
   DISTRONAME="LibreELEC"
 
@@ -20,13 +26,13 @@
 # Mediacenter to use (kodi / no)
   MEDIACENTER="kodi"
 
-# Skins to install (Confluence)
+# Skins to install (Estuary)
 # Space separated list is supported,
-# e.g. SKINS="Confluence"
-  SKINS="Confluence"
+# e.g. SKINS="Estuary"
+  SKINS="Estuary"
 
-# Default Skin (Confluence)
-  SKIN_DEFAULT="Confluence"
+# Default Skin (Estuary)
+  SKIN_DEFAULT="Estuary"
 
 # install extra subtitle Fonts for KODI (yes / no)
   KODI_EXTRA_FONTS="yes"
@@ -60,7 +66,11 @@
 # for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
+<<<<<<< HEAD
   ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU bcm_sta"
+=======
+  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU"
+>>>>>>> lakka/Lakka-V2.0
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -124,8 +134,13 @@
 # build and install hfs filesystem utilities (yes / no)
   HFSTOOLS="yes"
 
+<<<<<<< HEAD
 # Windowmanager to use (ratpoison / fluxbox / none)
   WINDOWMANAGER="none"
+=======
+# Windowmanager to use (fluxbox / none)
+  WINDOWMANAGER="fluxbox"
+>>>>>>> lakka/Lakka-V2.0
 
 # Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia)
 # Space separated list is supported,
@@ -138,9 +153,6 @@
 # build and install ATV IR remote support (yes / no)
   ATVCLIENT_SUPPORT="yes"
 
-# build and install IRServer IR/LCD support (yes / no)
-  IRSERVER_SUPPORT="yes"
-
 # build and install Joystick support (yes / no)
   JOYSTICK_SUPPORT="yes"
 
@@ -150,6 +162,7 @@
 # build and install iSCSI support - iscsistart (yes / no)
   ISCSI_SUPPORT="yes"
 
+<<<<<<< HEAD
 # LCD driver to Use - Possible drivers are ( Comma seperated:
 # bayrad,CFontz,CFontz633,CFontzPacket,curses,CwLnx,dm140,
 # ea65,EyeboxOne,g15,glcd,glcdlib,glk,hd44780,i2500vfd,
@@ -163,6 +176,8 @@
 # "none" for disable LCD support
   LCD_DRIVER="none"
 
+=======
+>>>>>>> lakka/Lakka-V2.0
 # Support for partitioning and formating disks in initramfs (yes / no)
 # This adds support for parted and mkfs.ext3/4 to initramfs for OEM usage
   INITRAMFS_PARTED_SUPPORT="no"

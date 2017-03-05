@@ -1,0 +1,85 @@
+#!/bin/sh
+################################################################################
+#      This file is part of LAKKA - http://www.lakka.tv
+#                  Copyright (C) 2017
+################################################################################
+
+hdmimode="1080p"
+
+# Parse command line arguments
+for arg in $(cat /proc/cmdline); do
+  case ${arg} in
+    hdmimode=*)
+      hdmimode=${arg#*=}
+      ;;
+    bootfrom*)
+      bootfromext=1
+      ;;
+    BOOT_IMAGE=*)
+      BOOT_IMAGE=${arg#*=}
+      ;;
+    boot=*)
+      boot=${arg#*=}
+      ;;
+    disk=*)
+      disk=${arg#*=}
+      ;;
+  esac
+done
+
+# Add information where to run Lakka from
+if [ -z "$BOOT_IMAGE" -o -z "$boot" -o -z "$disk" ]; then
+  cmdline=$(cat /proc/cmdline)
+  if [ -n "$bootfromext" ]; then
+    cmdline="$cmdline BOOT_IMAGE=kernel.img boot=LABEL=LAKKA disk=LABEL=LAKKA_DISK"
+  else
+    cmdline="$cmdline BOOT_IMAGE=/dev/boot boot=/dev/system disk=/dev/data"
+  fi
+  echo "$cmdline" > /proc/cmdline
+fi
+
+echo "$hdmimode" > /sys/class/display/mode
+
+# Enable framebuffer device
+echo 0 > /sys/class/graphics/fb0/blank
+
+# Blank fb1 to prevent static noise
+echo 1 > /sys/class/graphics/fb1/blank
+
+# Disable framebuffer scaling
+echo 0 > /sys/class/graphics/fb0/free_scale
+echo 0 > /sys/class/graphics/fb1/free_scale
+
+# Set framebuffer geometry to 1920x1080
+fbset -fb /dev/fb0 -g 1920 1080 1920 2160 32
+fbset -fb /dev/fb1 -g 32 32 32 32 32
+
+# Enable scaling for all resolutions except of 1920x1080
+case $hdmimode in
+  480*)             width=719  height=479  ;;
+  576*)             width=719  height=575  ;;
+  720p*)            width=1279 height=719  ;;
+  4k*|smpte*|2160*) width=3839 height=2159 ;;
+esac
+
+if [ -n $width -a -n $height ]; then
+  echo 0 0 1919 1079 > /sys/class/graphics/fb0/free_scale_axis
+  echo 0 0 $width $height > /sys/class/graphics/fb0/window_axis
+  echo 1920 > /sys/class/graphics/fb0/scale_width
+  echo 1080 > /sys/class/graphics/fb0/scale_height
+  echo 0x10001 > /sys/class/graphics/fb0/free_scale
+fi
+
+for part in /sys/block/*/queue/add_random; do
+  echo 0 > "$part"
+done
+
+# set smp_affinity
+#            Binary       Hex
+#    CPU 0    0001         1
+#    CPU 1    0010         2
+#    CPU 2    0100         4
+#    CPU 3    1000         8
+echo 4 > /proc/irq/40/smp_affinity  # eth0
+echo 2 > /proc/irq/64/smp_affinity  # esparser
+echo 2 > /proc/irq/78/smp_affinity  # deinterlace

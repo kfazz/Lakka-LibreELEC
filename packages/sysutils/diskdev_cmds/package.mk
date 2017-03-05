@@ -40,10 +40,10 @@ pre_make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/sbin
-    cp fsck_hfs.tproj/fsck_hfs $INSTALL/sbin
-      ln -sf fsck_hfs $INSTALL/sbin/fsck.hfs
-      ln -sf fsck_hfs $INSTALL/sbin/fsck.hfsplus
+  mkdir -p $INSTALL/usr/sbin
+    cp fsck_hfs.tproj/fsck_hfs $INSTALL/usr/sbin
+      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
+      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
 }
 
 make_init() {
@@ -51,8 +51,8 @@ make_init() {
 }
 
 makeinstall_init() {
-  mkdir -p $INSTALL/sbin
-    cp fsck_hfs.tproj/fsck_hfs $INSTALL/sbin
-      ln -sf fsck_hfs $INSTALL/sbin/fsck.hfs
-      ln -sf fsck_hfs $INSTALL/sbin/fsck.hfsplus
+  mkdir -p $INSTALL/usr/sbin
+    cp fsck_hfs.tproj/fsck_hfs $INSTALL/usr/sbin
+      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
+      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
 }

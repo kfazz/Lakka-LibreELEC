@@ -24,8 +24,8 @@
 ################################################################################
 
 # set variables:
-  VERBOSE="FALSE"
-  IMGSIZE="512" # size of BOOT in MB
+  VERBOSE="TRUE"
+  IMGSIZE="1024" # size of BOOT in MB
   IMGUSB="$IMAGE_NAME-usb.img"
   IMGHDD="$IMAGE_NAME-hdd.img"
 

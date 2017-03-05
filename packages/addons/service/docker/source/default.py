@@ -1,5 +1,5 @@
 ################################################################################
-#      This file is part of LibreELEC - http://www.libreelec.tv
+#      This file is part of LibreELEC - https://libreelec.tv
 #      Copyright (C) 2009-2016 Lukas Rusak (lrusak@libreelec.tv)
 #
 #  LibreELEC is free software: you can redistribute it and/or modify
@@ -250,7 +250,7 @@ def print_notification(json_data):
     try:
         if message is not '':
             length = int(__addon__.getSetting('notification_length')) * 1000
-            dialog.notification('Docker', message, '/storage/.kodi/addons/service.system.docker/icon.png', length)
+            dialog.notification('Docker', message, '/storage/.kodi/addons/service.system.docker/resources/icon.png', length)
             xbmc.log('## service.system.docker ## ' + unicode(message))
     except NameError as e:
         pass
