@@ -166,7 +166,9 @@
   if [ "$TARGET_ARCH" = "i386" ]; then
     # TODO: create Legacy build with OpenELEC-4.2
     # install legacy drivers to i386 ARCH
-    GRAPHIC_DRIVERS="nvidia-legacy"
+    GRAPHIC_DRIVERS="nouveau nvidia-legacy swrast"
+#    GRAPHIC_DRIVERS="nouveau"
+#    GRAPHIC_DRIVERS="nvidia-legacy"
   elif [ "$TARGET_ARCH" = "x86_64" ]; then
     GRAPHIC_DRIVERS="r300 r600 radeonsi i915 i965 nouveau"
   fi

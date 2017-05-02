@@ -36,8 +36,16 @@ get_graphicdrivers() {
       # see also http://nouveau.freedesktop.org/wiki/MesaDrivers/
       GALLIUM_DRIVERS="$GALLIUM_DRIVERS,nouveau"
       XORG_DRIVERS="$XORG_DRIVERS nouveau"
+      LLVM_SUPPORT="yes"
       COMPOSITE_SUPPORT="yes"
     fi
+
+    if [ "$drv" = "swrast" ]; then
+      GALLIUM_DRIVERS="$GALLIUM_DRIVERS,swrast"
+      XORG_DRIVERS="$XORG_DRIVERS nouveau"
+      LLVM_SUPPORT="yes"
+    fi
+
 
     if [ "$drv" = "nvidia" ]; then
       XORG_DRIVERS="$XORG_DRIVERS nvidia"
