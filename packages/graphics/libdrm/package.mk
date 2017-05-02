@@ -33,7 +33,7 @@ PKG_AUTORECONF="yes"
 
 get_graphicdrivers
 
-DRM_CONFIG="--disable-libkms --disable-intel --disable-radeon --disable-amdgpu"
+DRM_CONFIG="--disable-libkms --disable-intel --enable-radeon --disable-amdgpu"
 DRM_CONFIG="$DRM_CONFIG --disable-nouveau --disable-vmwgfx"
 
 for drv in $GRAPHIC_DRIVERS; do
