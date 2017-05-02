@@ -4,7 +4,7 @@
 #                  Copyright (C) 2017
 ################################################################################
 
-hdmimode="1080p"
+hdmimode=720p
 
 # Parse command line arguments
 for arg in $(cat /proc/cmdline); do
@@ -12,8 +12,8 @@ for arg in $(cat /proc/cmdline); do
     hdmimode=*)
       hdmimode=${arg#*=}
       ;;
-    bootfrom*)
-      bootfromext=1
+    bootfromsd*)
+      bootfromsd=1
       ;;
     BOOT_IMAGE=*)
       BOOT_IMAGE=${arg#*=}
@@ -51,24 +51,15 @@ echo 0 > /sys/class/graphics/fb0/free_scale
 echo 0 > /sys/class/graphics/fb1/free_scale
 
 # Set framebuffer geometry to 1920x1080
-fbset -fb /dev/fb0 -g 1920 1080 1920 2160 32
+case "$hdmimode" in
+  720*)
+    fbset -fb /dev/fb0 -g 1280 720 1920 2160 32
+    ;;
+  1080*)
+    fbset -fb /dev/fb0 -g 1920 1080 1920 2160 32
+    ;;
+  esac
 fbset -fb /dev/fb1 -g 32 32 32 32 32
-
-# Enable scaling for all resolutions except of 1920x1080
-case $hdmimode in
-  480*)             width=719  height=479  ;;
-  576*)             width=719  height=575  ;;
-  720p*)            width=1279 height=719  ;;
-  4k*|smpte*|2160*) width=3839 height=2159 ;;
-esac
-
-if [ -n $width -a -n $height ]; then
-  echo 0 0 1919 1079 > /sys/class/graphics/fb0/free_scale_axis
-  echo 0 0 $width $height > /sys/class/graphics/fb0/window_axis
-  echo 1920 > /sys/class/graphics/fb0/scale_width
-  echo 1080 > /sys/class/graphics/fb0/scale_height
-  echo 0x10001 > /sys/class/graphics/fb0/free_scale
-fi
 
 for part in /sys/block/*/queue/add_random; do
   echo 0 > "$part"

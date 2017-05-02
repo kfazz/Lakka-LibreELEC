@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="lcdd"
-PKG_VERSION="c05a7de"
-PKG_REV="102"
+PKG_VERSION="466edd3"
+PKG_REV="104"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://lcdproc.org/"

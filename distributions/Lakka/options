@@ -82,7 +82,7 @@
 # for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU bcm_sta"
+  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU RTL8192EU bcm_sta"
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -253,6 +253,8 @@
 
   LAKKA_MIRROR="http://sources.lakka.tv"
 
+  LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-saturn beetle-supergrafx beetle-vb beetle-wswan bluemsx cap32 crocods desmume dinothawr dosbox easyrpg fbalpha fceumm fuse-libretro gambatte genesis-plus-gx gpsp gw-libretro handy hatari lutro mame2003 mgba mrboom mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg ppsspp prboom prosystem puae scummvm snes9x snes9x2002 snes9x2005 snes9x2010 stella tyrquake uae4arm uzebox vbam vecx vice virtualjaguar xrick yabause"
+
   RA_PLAYLIST_NAMES=""\
 "Atari - 2600.lpl;"\
 "Atari - 5200.lpl;"\
@@ -332,7 +334,7 @@
 "/tmp/cores/mgba_libretro.so;"\
 "/tmp/cores/gambatte_libretro.so;"\
 "/tmp/cores/gambatte_libretro.so;"\
-"/tmp/cores/parallel-n64_libretro.so;"\
+"/tmp/cores/parallel_n64_libretro.so;"\
 "/tmp/cores/desmume_libretro.so;"\
 "/tmp/cores/desmume_libretro.so;"\
 "/tmp/cores/desmume_libretro.so;"\

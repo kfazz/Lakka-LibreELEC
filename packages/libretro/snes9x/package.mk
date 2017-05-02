@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="snes9x"
-PKG_VERSION="1ad7321"
+PKG_VERSION="0240276"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="Non-commercial"
@@ -38,7 +38,7 @@ make_target() {
   if [ "$ARCH" == "arm" ]; then
     CXXFLAGS="$CXXFLAGS -DARM"
   fi
-  make -C libretro GIT_VERSION="\" $PKG_VERSION\""
+  make -C libretro
 }
 
 makeinstall_target() {

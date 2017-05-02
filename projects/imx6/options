@@ -119,7 +119,7 @@
   # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
   # Space separated list is supported,
   # e.g. FIRMWARE="dvb-firmware misc-firmware wlan-firmware"
-    FIRMWARE="misc-firmware wlan-firmware iwlwifi-firmware dvb-firmware brcmfmac_sdio-firmware-imx"
+    FIRMWARE="misc-firmware wlan-firmware dvb-firmware brcmfmac_sdio-firmware-imx"
 
   # build and install ATV IR remote support (yes / no)
     ATVCLIENT_SUPPORT="no"
@@ -137,4 +137,4 @@
     INSTALLER_SUPPORT="no"
 
   # override some playlist core assignation
-    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel-n64/mupen64plus}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel_n64/mupen64plus}"

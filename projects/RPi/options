@@ -112,7 +112,7 @@
   # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
   # Space separated list is supported,
   # e.g. FIRMWARE="dvb-firmware misc-firmware wlan-firmware"
-    FIRMWARE="misc-firmware wlan-firmware dvb-firmware"
+    FIRMWARE="misc-firmware wlan-firmware dvb-firmware brcmfmac_sdio-firmware-rpi"
 
   # build and install ATV IR remote support (yes / no)
     ATVCLIENT_SUPPORT="no"
@@ -140,10 +140,14 @@
   # for a list of additinoal drivers see packages/linux-drivers
   # Space separated list is supported,
   # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-    ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS media_build"
+    ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS media_build rpi-cirrus-config"
 
   # override some playlist core assignation
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//nestopia/fceumm}"
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//snes9x2010/snes9x2002}"
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//genesis_plus_gx/picodrive}"
-    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel-n64/mupen64plus}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel_n64/mupen64plus}"
+
+  # disable some cores
+    LIBRETRO_CORES="${LIBRETRO_CORES//ppsspp/}"
+    LIBRETRO_CORES="${LIBRETRO_CORES//uae4arm/}"

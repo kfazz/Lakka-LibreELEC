@@ -75,7 +75,7 @@
   # Kernel to use. values can be:
   # default:  default mainline kernel
     LINUX="custom"
-    KERNEL_VERSION="f353216"
+    KERNEL_VERSION="c850c92"
     KERNEL_URL="https://github.com/kszaq/linux-amlogic-le/archive/$KERNEL_VERSION.tar.gz"
     KERNEL_SOURCE_DIR="linux-amlogic-le-$KERNEL_VERSION*"
     KERNEL_PATCH_DIRS="amlogic-3.14"
@@ -169,5 +169,5 @@
     OEM_SUPPORT="yes"
 
   # override some playlist core assignation
-    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel-n64/mupen64plus}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel_n64/mupen64plus}"
 

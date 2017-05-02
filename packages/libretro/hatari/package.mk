@@ -19,12 +19,12 @@
 ################################################################################
 
 PKG_NAME="hatari"
-PKG_VERSION="204dc6e"
+PKG_VERSION="302c7bf"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/hatari"
-PKG_URL="$LAKKA_MIRROR/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_URL="https://github.com/libretro/hatari/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
@@ -33,13 +33,16 @@ PKG_LONGDESC="New rebasing of Hatari based on Mercurial upstream. Tries to be a 
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_USE_CMAKE="no"
 
 configure_target() {
   :
 }
 
 make_target() {
-  sed -i -e "s/   CC = gcc//" ../Makefile.libretro
+  if [ "$ARCH" == "arm" ]; then
+    CFLAGS="$CFLAGS -DARM -marm"
+  fi
   make -C .. -f Makefile.libretro
 }
 
