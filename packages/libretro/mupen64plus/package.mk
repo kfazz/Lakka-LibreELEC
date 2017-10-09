@@ -45,7 +45,7 @@ pre_configure_target() {
 make_target() {
   case $PROJECT in
     ATV)
-      make FORCE_GLES=1  GLES=1 NO_ASM=1 DEBUG=1 DEBUG_CORE=1 # WITH_DYNAREC=x86 
+      make GLIDEN64=0 WITH_DYNAREC=x86
       ;;
     RPi|Gamegirl)
       CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
