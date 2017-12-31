@@ -1,0 +1,18 @@
+Description: Remove an unused function, fixes the build with ARM dynarec, see https://github.com/libretro/mupen64plus-libretro/issues/291
+Index: mupen64plus-libretro-master/mupen64plus-core/src/r4300/new_dynarec/assem_arm.c
+===================================================================
+--- mupen64plus-libretro-master.orig/mupen64plus-core/src/r4300/new_dynarec/assem_arm.c	2016-02-07 11:39:40.000000000 -0200
++++ mupen64plus-libretro-master/mupen64plus-core/src/r4300/new_dynarec/assem_arm.c	2016-04-05 18:53:00.392233208 -0300
+@@ -2321,12 +2321,6 @@
+   output_w32(0x1b000000|offset);
+ }
+ 
+-static void emit_gen_ram_ptr(u_int addr, int hr)
+-{
+-  emit_lea_rip((int)g_rdram-0x80000000+addr,hr);
+-}
+-
+-
+ #ifdef IMM_PREFETCH
+ // Used to preload hash table entries
+ static void emit_prefetch(void *addr)

@@ -1,0 +1,161 @@
+Description: Dirty patch to avoid angrylion, which is non-commercial (mame license).
+Index: mupen64plus-libretro-master/Makefile.common
+===================================================================
+--- mupen64plus-libretro-master.orig/Makefile.common	2015-09-22 15:07:24.440882289 -0300
++++ mupen64plus-libretro-master/Makefile.common	2015-09-22 15:07:24.436882247 -0300
+@@ -5,7 +5,6 @@
+ AUDIO_LIBRETRO_DIR = $(CORE_DIR)/src/plugin/audio_libretro
+ VIDEODIR_RICE      = $(ROOT_DIR)/gles2rice/src
+ VIDEODIR_GLN64     = $(ROOT_DIR)/gles2n64/src
+-VIDEODIR_ANGRYLION = $(ROOT_DIR)/mupen64plus-video-angrylion
+ VIDEODIR_GLIDE     = $(ROOT_DIR)/glide2gl/src
+ VIDEODIR_GLIDEN64  = $(ROOT_DIR)/mupen64plus-video-gliden64
+ 
+@@ -283,12 +282,6 @@
+             $(VIDEODIR_GLIDE)/Glitch64/glitchmain.c \
+             $(VIDEODIR_GLIDE)/Glitch64/glitch64_textures.c
+ 
+-### Angrylion's renderer ###
+-SOURCES_C +=  $(VIDEODIR_ANGRYLION)/n64video_main.c \
+-						  $(VIDEODIR_ANGRYLION)/n64video_vi.c \
+-						  $(VIDEODIR_ANGRYLION)/n64video_rdp.c \
+-						  $(VIDEODIR_ANGRYLION)/n64video.c
+-
+ ifeq ($(GLES), 1)
+ 	GLFLAGS += -DGLES -DHAVE_OPENGLES2 -DDISABLE_3POINT -DUSE_GLES
+ 	SOURCES_C += $(LIBRETRO_COMM_DIR)/glsym/glsym_es2.c
+Index: mupen64plus-libretro-master/libretro/libretro.c
+===================================================================
+--- mupen64plus-libretro-master.orig/libretro/libretro.c	2015-09-22 15:07:24.440882289 -0300
++++ mupen64plus-libretro-master/libretro/libretro.c	2015-09-22 15:08:37.121636707 -0300
+@@ -139,8 +139,6 @@
+          gfx_plugin = GFX_RICE;
+       if(gfx_var.value && !strcmp(gfx_var.value, "glide64"))
+          gfx_plugin = GFX_GLIDE64;
+-	  if(gfx_var.value && !strcmp(gfx_var.value, "angrylion"))
+-         gfx_plugin = GFX_ANGRYLION;
+    }
+    else
+       gfx_plugin = GFX_GLIDE64;
+@@ -230,7 +228,7 @@
+       { "mupen64-gfxplugin-accuracy",
+          "GFX Accuracy (restart); medium|high|veryhigh|low" },
+       { "mupen64-gfxplugin",
+-         "GFX Plugin; auto|glide64|gln64|rice|angrylion" },
++         "GFX Plugin; auto|glide64|gln64|rice" },
+       { "mupen64-rspplugin",
+          "RSP Plugin; auto|hle|cxd4" },
+       { "mupen64-screensize",
+@@ -245,9 +243,6 @@
+       { "mupen64-polyoffset-units",
+        "(Glide64) Polygon Offset Units; -3.0|-2.5|-2.0|-1.5|-1.0|-0.5|0.0|0.5|1.0|1.5|2.0|2.5|3.0|3.5|4.0|4.5|5.0|-3.5|-4.0|-4.5|-5.0"
+       },
+-      { "mupen64-angrylion-vioverlay",
+-       "(Angrylion) VI Overlay; disabled|enabled"
+-      },
+       { "mupen64-virefresh",
+          "VI Refresh (Overclock); 1500|2200" },
+       { "mupen64-bufferswap",
+@@ -307,9 +302,7 @@
+ {
+    if (flip_only)
+    {
+-      if (gfx_plugin == GFX_ANGRYLION)
+-         video_cb((screen_pitch == 0) ? NULL : blitter_buf, screen_width, screen_height, screen_pitch);
+-      else
++
+          video_cb(RETRO_HW_FRAME_BUFFER_VALID, screen_width, screen_height, 0);
+ 
+       pushed_frame = true;
+@@ -513,8 +506,6 @@
+       perf_cb.perf_log();
+ }
+ 
+-#include "../mupen64plus-video-angrylion/vi.h"
+-
+ extern void glide_set_filtering(unsigned value);
+ extern void ChangeSize();
+ 
+@@ -531,7 +522,7 @@
+       /* TODO/FIXME - hack - force screen width and height back to 640x480 in case
+        * we change it with Angrylion. If we ever want to support variable resolution sizes in Angrylion
+        * then we need to drop this. */
+-      if (gfx_plugin == GFX_ANGRYLION || sscanf(var.value ? var.value : "640x480", "%dx%d", &screen_width, &screen_height) != 2)
++      if (sscanf(var.value ? var.value : "640x480", "%dx%d", &screen_width, &screen_height) != 2)
+       {
+          screen_width = 640;
+          screen_height = 480;
+@@ -561,28 +552,11 @@
+             gfx_plugin = GFX_RICE;
+          if(!strcmp(var.value, "glide64"))
+             gfx_plugin = GFX_GLIDE64;
+-         if(!strcmp(var.value, "angrylion"))
+-            gfx_plugin = GFX_ANGRYLION;
+       }
+       else
+          gfx_plugin = GFX_GLIDE64;
+    }
+ 
+-   var.key = "mupen64-angrylion-vioverlay";
+-   var.value = NULL;
+-
+-   environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var);
+-
+-   if (var.value)
+-   {
+-      if(!strcmp(var.value, "enabled"))
+-         overlay = 1;
+-      else if(!strcmp(var.value, "disabled"))
+-         overlay = 0;
+-   }
+-   else
+-      overlay = 1;
+-
+    CFG_HLE_GFX = (gfx_plugin != GFX_ANGRYLION) ? 1 : 0;
+    CFG_HLE_AUD = 0; /* There is no HLE audio code in libretro audio plugin. */
+ 
+@@ -869,11 +843,6 @@
+    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
+       update_variables(false);
+ 
+-#ifdef SINGLE_THREAD
+-   if (gfx_plugin == GFX_ANGRYLION && !emu_initialized)
+-      emu_step_initialize();
+-#endif
+-
+    FAKE_SDL_TICKS += 16;
+    pushed_frame = false;
+ 
+Index: mupen64plus-libretro-master/mupen64plus-core/src/api/config.c
+===================================================================
+--- mupen64plus-libretro-master.orig/mupen64plus-core/src/api/config.c	2015-09-22 15:07:24.440882289 -0300
++++ mupen64plus-libretro-master/mupen64plus-core/src/api/config.c	2015-09-22 15:10:12.106628942 -0300
+@@ -1242,8 +1242,6 @@
+    {
+       return false;
+    }
+-   if (!strcmp(ParamName, "VIOverlay"))
+-      return overlay;
+ 
+    if (!strcmp(ParamName, "Fullscreen"))
+       return true;
+Index: mupen64plus-libretro-master/mupen64plus-core/src/plugin/plugin.c
+===================================================================
+--- mupen64plus-libretro-master.orig/mupen64plus-core/src/plugin/plugin.c	2015-09-22 15:07:24.440882289 -0300
++++ mupen64plus-libretro-master/mupen64plus-core/src/plugin/plugin.c	2015-09-22 15:07:24.440882289 -0300
+@@ -93,7 +93,6 @@
+         X##FBGetFrameBufferInfo \
+     }
+ 
+-DEFINE_GFX(angrylion);
+ DEFINE_GFX(rice);
+ DEFINE_GFX(gln64);
+ DEFINE_GFX(glide64);
+@@ -248,7 +247,6 @@
+ {
+    switch (gfx_plugin)
+    {
+-      case GFX_ANGRYLION:  gfx = gfx_angrylion; break;
+       case GFX_RICE:  gfx = gfx_rice; break;
+       case GFX_GLN64: gfx = gfx_gln64; break;
+       default:        gfx = gfx_glide64; break;
