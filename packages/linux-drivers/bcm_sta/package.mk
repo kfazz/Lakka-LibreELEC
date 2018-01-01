@@ -21,7 +21,7 @@
 
 PKG_NAME="bcm_sta"
 PKG_VERSION="6.30.223.271"
-PKG_ARCH="i386 x86_64"
+PKG_ARCH="x86_64"
 PKG_LICENSE="nonfree"
 PKG_SITE="http://www.broadcom.com/"
 PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
@@ -47,6 +47,6 @@ make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/lib/modules/$(get_module_dir)/bcm_sta
-    cp *.ko $INSTALL/usr/lib/modules/$(get_module_dir)/$PKG_NAME
+  mkdir -p $INSTALL/$(get_full_module_dir)/bcm_sta
+    cp *.ko $INSTALL/$(get_full_module_dir)/$PKG_NAME
 }

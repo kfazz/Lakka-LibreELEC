@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="mupen64plus"
-PKG_VERSION="eda9d16"
+PKG_VERSION="6f80cbc"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -44,15 +44,12 @@ pre_configure_target() {
 
 make_target() {
   case $PROJECT in
-    ATV)
-      make GLIDEN64=0 WITH_DYNAREC=x86
-      ;;
-    RPi|Gamegirl)
+    RPi|Gamegirl|Slice)
       CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
 	              -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
       make platform=rpi
       ;;
-    RPi2)
+    RPi2|Slice3)
       CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
                       -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
       make platform=rpi2

@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="parallel-n64"
-PKG_VERSION="d1539a9"
+PKG_VERSION="db08e9c"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -45,12 +45,13 @@ make_target() {
     DYNAREC=x86
   fi
 
-  if [ "$PROJECT" == "RPi" -o "$PROJECT" == "Gamegirl" ]; then
+  if [ "$PROJECT" == "RPi" -o "$PROJECT" == "Gamegirl" -o "$PROJECT" == "Slice" ]; then
     make platform=rpi
   elif [[ "$TARGET_FPU" =~ "neon" ]]; then
     CFLAGS="$CFLAGS -DGL_BGRA_EXT=0x80E1" # Fix build for platforms where GL_BGRA_EXT is not defined
     make platform=armv-gles-neon
   else
+    LDFLAGS="$LDFLAGS -lpthread"
     make WITH_DYNAREC=$DYNAREC HAVE_PARALLEL=0
   fi
 }

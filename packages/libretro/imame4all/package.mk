@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="imame4all"
-PKG_VERSION="474ff5d"
+PKG_VERSION="f8ae2de"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"

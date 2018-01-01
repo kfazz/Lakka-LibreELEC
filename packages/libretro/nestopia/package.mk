@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="nestopia"
-PKG_VERSION="9fa43cb"
+PKG_VERSION="54f6d76"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -36,7 +36,7 @@ PKG_AUTORECONF="no"
 PKG_USE_CMAKE="no"
 
 make_target() {
-  cd $ROOT/$PKG_BUILD
+  cd $PKG_BUILD
   make -C libretro
 }
 

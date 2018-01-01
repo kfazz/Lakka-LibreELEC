@@ -45,19 +45,19 @@ pre_make_target() {
 pre_configure_target() {
 
 # use it here to be sure libhdhomerun is already built
-  PKG_CMAKE_OPTS_TARGET="-DLIBHDHOMERUN_PATH=$(ls -d $ROOT/$BUILD/libhdhomerun-*/)"
+  PKG_CMAKE_OPTS_TARGET="-DLIBHDHOMERUN_PATH=$(ls -d $BUILD/libhdhomerun-*/)"
 
 # absolute path
-  LIBHDHOMERUN_PATH=$(ls -d $ROOT/$BUILD/libhdhomerun-*/)
+  LIBHDHOMERUN_PATH=$(ls -d $BUILD/libhdhomerun-*/)
   sed -i "s|SET(LIBHDHOMERUN_PATH .*)|SET(LIBHDHOMERUN_PATH $LIBHDHOMERUN_PATH)|g" ../userhdhomerun/CMakeLists.txt
   sed -i "s|/etc/dvbhdhomerun|/tmp/dvbhdhomerun|g" ../userhdhomerun/hdhomerun_tuner.cpp
   sed -i "s|/etc/dvbhdhomerun|/tmp/dvbhdhomerun|g" ../userhdhomerun/hdhomerun_controller.cpp
 }
 
 makeinstall_target() {
-  cd $ROOT/$PKG_BUILD
-    mkdir -p $INSTALL/usr/lib/modules/$(get_module_dir)/hdhomerun
-      cp kernel/*.ko $INSTALL/usr/lib/modules/$(get_module_dir)/hdhomerun/
+  cd $PKG_BUILD
+    mkdir -p $INSTALL/$(get_full_module_dir)/hdhomerun
+      cp kernel/*.ko $INSTALL/$(get_full_module_dir)/hdhomerun/
 
     mkdir -p $INSTALL/usr/bin
       cp -PR .$TARGET_NAME/userhdhomerun $INSTALL/usr/bin

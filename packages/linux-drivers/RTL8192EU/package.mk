@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="RTL8192EU"
-PKG_VERSION="0c80da7"
+PKG_VERSION="192bad4"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/Mange/rtl8192eu-linux-driver"
@@ -34,7 +34,7 @@ PKG_AUTORECONF="no"
 
 if [ "$TARGET_KERNEL_ARCH" = "arm64" -a "$TARGET_ARCH" = "arm" ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET gcc-linaro-aarch64-elf:host"
-  export PATH=$ROOT/$TOOLCHAIN/lib/gcc-linaro-aarch64-elf/bin/:$PATH
+  export PATH=$TOOLCHAIN/lib/gcc-linaro-aarch64-elf/bin/:$PATH
   TARGET_PREFIX=aarch64-elf-
 fi
 
@@ -52,6 +52,6 @@ make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/lib/modules/$(get_module_dir)/$PKG_NAME
-    cp *.ko $INSTALL/usr/lib/modules/$(get_module_dir)/$PKG_NAME
+  mkdir -p $INSTALL/$(get_full_module_dir)/$PKG_NAME
+    cp *.ko $INSTALL/$(get_full_module_dir)/$PKG_NAME
 }

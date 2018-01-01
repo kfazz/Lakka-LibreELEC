@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="retroarch-assets"
-PKG_VERSION="eceae2e"
+PKG_VERSION="f5069cb"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -34,11 +34,10 @@ PKG_LONGDESC="RetroArch assets. Background and icon themes for the menu drivers.
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-make_target() {
-  :
+configure_target() {
+  cd $PKG_BUILD
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/share/retroarch-assets
-  cp -r * $INSTALL/usr/share/retroarch-assets
+  make install INSTALLDIR="$INSTALL/usr/share/retroarch-assets"
 }

@@ -19,12 +19,12 @@
 ################################################################################
 
 PKG_NAME="lutro"
-PKG_VERSION="687a19c"
+PKG_VERSION="d9cacd3"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/libretro/libretro-lutro"
-PKG_URL="$LAKKA_MIRROR/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_URL="https://github.com/libretro/libretro-lutro/archive/master.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
@@ -39,7 +39,7 @@ make_target() {
   if [ "$ARCH" == "x86_64" ]; then
     PTR_SIZE="-m64"
   fi  
-  make WANT_JIT=1 HOST_CC="$HOST_CC" PTR_SIZE="$PTR_SIZE" CROSS="$TARGET_PREFIX" HAVE_COMPOSITION=1
+  make HOST_CC="$HOST_CC" PTR_SIZE="$PTR_SIZE" CROSS="$TARGET_PREFIX" HAVE_COMPOSITION=1
 }
 
 makeinstall_target() {

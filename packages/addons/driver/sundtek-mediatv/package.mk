@@ -18,7 +18,7 @@
 
 PKG_NAME="sundtek-mediatv"
 PKG_VERSION="7.0"
-PKG_REV="102"
+PKG_REV="104"
 PKG_ARCH="any"
 PKG_LICENSE="nonfree"
 PKG_SITE="http://support.sundtek.com/"
@@ -34,8 +34,8 @@ PKG_ADDON_TYPE="xbmc.service"
 PKG_AUTORECONF="no"
 
 make_target() {
-  mkdir -p $ROOT/$PKG_BUILD
-  cd $ROOT/$PKG_BUILD
+  mkdir -p $PKG_BUILD
+  cd $PKG_BUILD
 
   case $TARGET_ARCH in
     i386)

@@ -22,7 +22,7 @@ PKG_REV="1"
 PKG_ARCH="arm aarch64"
 PKG_LICENSE="GPL"
 PKG_SITE="https://boundarydevices.com/new-silex-wifi-802-11ac-bt4-1-module/"
-PKG_VERSION="boundary-LNX.LEH.4.2.2.2-4.5.20.034"
+PKG_VERSION="8e1b647"
 PKG_URL="https://github.com/boundarydevices/qcacld-2.0/archive/$PKG_VERSION.tar.gz"
 PKG_SOURCE_DIR="qcacld-2.0-$PKG_VERSION*"
 PKG_DEPENDS_TARGET="toolchain linux"
@@ -34,9 +34,9 @@ PKG_LONGDESC="qca9377-aml"
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-if [ $TARGET_KERNEL_ARCH = "arm64" ] && [ $TARGET_ARCH == "arm"  ]; then
+if [ "$TARGET_KERNEL_ARCH" = "arm64" -a "$TARGET_ARCH" = "arm" ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET gcc-linaro-aarch64-elf:host"
-  export PATH=$ROOT/$TOOLCHAIN/lib/gcc-linaro-aarch64-elf/bin/:$PATH
+  export PATH=$TOOLCHAIN/lib/gcc-linaro-aarch64-elf/bin/:$PATH
   TARGET_PREFIX=aarch64-elf-
 fi
 
@@ -46,6 +46,6 @@ make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/lib/modules/$(get_module_dir)/$PKG_NAME
-  cp $ROOT/$PKG_BUILD/wlan.ko $INSTALL/usr/lib/modules/$(get_module_dir)/$PKG_NAME/
+  mkdir -p $INSTALL/$(get_full_module_dir)/$PKG_NAME
+    cp *.ko $INSTALL/$(get_full_module_dir)/$PKG_NAME
 }

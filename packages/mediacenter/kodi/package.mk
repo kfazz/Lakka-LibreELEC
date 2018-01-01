@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="kodi"
-PKG_VERSION="fc1619b"
+PKG_VERSION="a9a7a20"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
@@ -31,7 +31,7 @@ PKG_LONGDESC="Kodi Media Center (which was formerly named Xbox Media Center or X
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-PKG_CMAKE_SCRIPT="$ROOT/$PKG_BUILD/project/cmake/CMakeLists.txt"
+PKG_CMAKE_SCRIPT="$PKG_BUILD/project/cmake/CMakeLists.txt"
 
   get_graphicdrivers
 
@@ -188,6 +188,10 @@ else
   KODI_ARCH="-DWITH_ARCH=$TARGET_ARCH"
 fi
 
+if [ "$PROJECT" = "Slice" -o "$PROJECT" = "Slice3" ]; then
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET led_tools"
+fi
+
 if [ ! "$KODIPLAYER_DRIVER" = default ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $KODIPLAYER_DRIVER"
   if [ "$KODIPLAYER_DRIVER" = bcm2835-driver ]; then
@@ -205,9 +209,9 @@ KODI_LIBDVD="$KODI_DVDCSS \
              -DLIBDVDNAV_URL=$ROOT/$SOURCES/libdvdnav/libdvdnav-$(get_pkg_version libdvdnav).tar.gz \
              -DLIBDVDREAD_URL=$ROOT/$SOURCES/libdvdread/libdvdread-$(get_pkg_version libdvdread).tar.gz"
 
-PKG_CMAKE_OPTS_TARGET="-DNATIVEPREFIX=$ROOT/$TOOLCHAIN \
-                       -DWITH_TEXTUREPACKER=$ROOT/$TOOLCHAIN/bin/TexturePacker \
-                       -DDEPENDS_PATH=$ROOT/$PKG_BUILD/depends \
+PKG_CMAKE_OPTS_TARGET="-DNATIVEPREFIX=$TOOLCHAIN \
+                       -DWITH_TEXTUREPACKER=$TOOLCHAIN/bin/TexturePacker \
+                       -DDEPENDS_PATH=$PKG_BUILD/depends \
                        -DPYTHON_INCLUDE_DIRS=$SYSROOT_PREFIX/usr/include/python2.7 \
                        -DGIT_VERSION=$PKG_VERSION \
                        -DENABLE_INTERNAL_FFMPEG=OFF \
@@ -221,14 +225,13 @@ PKG_CMAKE_OPTS_TARGET="-DNATIVEPREFIX=$ROOT/$TOOLCHAIN \
                        -DENABLE_CCACHE=ON \
                        -DENABLE_LIRC=ON \
                        -DENABLE_EVENTCLIENTS=ON \
-                       -DENABLE_LDGOLD=OFF \
+                       -DENABLE_LDGOLD=ON \
                        $KODI_ARCH \
                        $KODI_OPENGL \
                        $KODI_OPENGLES \
                        $KODI_OPENMAX \
                        $KODI_VDPAU \
                        $KODI_VAAPI \
-                       $KODI_JOYSTICK \
                        $KODI_CEC \
                        $KODI_XORG \
                        $KODI_SAMBA \
@@ -248,7 +251,6 @@ PKG_CMAKE_OPTS_TARGET="-DNATIVEPREFIX=$ROOT/$TOOLCHAIN \
 pre_configure_target() {
 # kodi should never be built with lto
   strip_lto
-  strip_gold
 
   export LIBS="$LIBS -lz -lterminfo"
 }
@@ -335,6 +337,9 @@ post_makeinstall_target() {
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "os.openelec.tv" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "repository.libreelec.tv" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "service.libreelec.settings" $ADDON_MANIFEST
+  if [ "$PROJECT" = "Slice" -o "$PROJECT" = "Slice3" ]; then
+    xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "service.slice" $ADDON_MANIFEST
+  fi
 
   # more binaddons cross compile badness meh
   sed -e "s:INCLUDE_DIR /usr/include/kodi:INCLUDE_DIR $SYSROOT_PREFIX/usr/include/kodi:g" \

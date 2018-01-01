@@ -57,7 +57,7 @@
 
   # Kernel to use. values can be:
   # default:  default mainline kernel
-    LINUX="default"
+    LINUX="default-rpi"
 
   # NOOBS supported hex versions (legacy)
     NOOBS_HEX="1040,1041,2082"
@@ -136,7 +136,7 @@
   # for a list of additinoal drivers see packages/linux-drivers
   # Space separated list is supported,
   # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-    ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS media_build rpi-cirrus-config"
+    ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS rpi-cirrus-config"
 
   # override some playlist core assignation
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel_n64/mupen64plus}"

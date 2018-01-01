@@ -19,13 +19,13 @@
 ################################################################################
 
 PKG_NAME="retroarch"
-PKG_VERSION="0b05fdf"
-PKG_REV="4"
+PKG_VERSION="c6217ef"
+PKG_REV="9"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="https://github.com/libretro/RetroArch/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig common-shaders lakka-update libretro-database ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils"
+PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig glsl-shaders lakka-update libretro-database ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
 PKG_SHORTDESC="Reference frontend for the libretro API."
@@ -58,13 +58,17 @@ elif [ "$OPENGLES" == "bcm2835-driver" ]; then
   RETROARCH_GL="--enable-opengles --disable-kms --disable-x11"
   CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
                   -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
-elif [ "$OPENGLES" == "sunxi-mali" ] || [ "$OPENGLES" == "odroidc1-mali" ] || [ "$OPENGLES" == "odroidxu3-mali" ] || [ "$OPENGLES" == "opengl-meson" ] || [ "$OPENGLES" == "opengl-meson8" ]; then
+elif [ "$OPENGLES" == "odroidc1-mali" ] || [ "$OPENGLES" == "odroidxu3-mali" ] || [ "$OPENGLES" == "opengl-meson" ] || [ "$OPENGLES" == "opengl-meson8" ]; then
   RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-mali_fbdev"
 elif [ "$OPENGLES" == "gpu-viv-bin-mx6q" ] || [ "$OPENGLES" == "imx-gpu-viv" ]; then
   RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-vivante_fbdev"
   CFLAGS="$CFLAGS -DLINUX -DEGL_API_FB"
-elif [ "$OPENGLES" == "mesa" ]; then
-  RETROARCH_GL="--enable-opengles"
+elif [ "$OPENGLES" == "mali-rockchip" ]; then
+  RETROARCH_GL="--enable-opengles --enable-kms --disable-x11 --disable-wayland"
+elif [ "$OPENGLES" == "allwinner-fb-mali" ]; then
+   RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-mali_fbdev"
+elif [ "$OPENGLES" == "allwinner-mali" ]; then
+   RETROARCH_GL="--enable-opengles --enable-kms --disable-x11"
 fi
 
 if [[ "$TARGET_FPU" =~ "neon" ]]; then
@@ -76,13 +80,11 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            --disable-sdl \
                            $RETROARCH_GL \
                            $RETROARCH_NEON \
-                           --enable-fbo \
                            --enable-zlib \
                            --enable-freetype"
 
 pre_configure_target() {
-  strip_lto # workaround for https://github.com/libretro/RetroArch/issues/1078
-  cd $ROOT/$PKG_BUILD
+  cd $PKG_BUILD
 }
 
 make_target() {
@@ -94,14 +96,14 @@ make_target() {
 makeinstall_target() {
   mkdir -p $INSTALL/usr/bin
   mkdir -p $INSTALL/etc
-    cp $ROOT/$PKG_BUILD/retroarch $INSTALL/usr/bin
-    cp $ROOT/$PKG_BUILD/retroarch.cfg $INSTALL/etc
+    cp $PKG_BUILD/retroarch $INSTALL/usr/bin
+    cp $PKG_BUILD/retroarch.cfg $INSTALL/etc
   mkdir -p $INSTALL/usr/share/video_filters
-    cp $ROOT/$PKG_BUILD/gfx/video_filters/*.so $INSTALL/usr/share/video_filters
-    cp $ROOT/$PKG_BUILD/gfx/video_filters/*.filt $INSTALL/usr/share/video_filters
+    cp $PKG_BUILD/gfx/video_filters/*.so $INSTALL/usr/share/video_filters
+    cp $PKG_BUILD/gfx/video_filters/*.filt $INSTALL/usr/share/video_filters
   mkdir -p $INSTALL/usr/share/audio_filters
-    cp $ROOT/$PKG_BUILD/libretro-common/audio/dsp_filters/*.so $INSTALL/usr/share/audio_filters
-    cp $ROOT/$PKG_BUILD/libretro-common/audio/dsp_filters/*.dsp $INSTALL/usr/share/audio_filters
+    cp $PKG_BUILD/libretro-common/audio/dsp_filters/*.so $INSTALL/usr/share/audio_filters
+    cp $PKG_BUILD/libretro-common/audio/dsp_filters/*.dsp $INSTALL/usr/share/audio_filters
   
   # General configuration
   sed -i -e "s/# libretro_directory =/libretro_directory = \"\/tmp\/cores\"/" $INSTALL/etc/retroarch.cfg
@@ -119,7 +121,13 @@ makeinstall_target() {
   sed -i -e "s/# overlays_directory =/overlays_directory =\/usr\/share\/retroarch-overlays/" $INSTALL/etc/retroarch.cfg
   sed -i -e "s/# cheat_database_path =/cheat_database_path =\/tmp\/database\/cht/" $INSTALL/etc/retroarch.cfg
   sed -i -e "s/# menu_driver = \"rgui\"/menu_driver = \"xmb\"/" $INSTALL/etc/retroarch.cfg
+
+  # Quick menu
   echo "core_assets_directory =/storage/roms/downloads" >> $INSTALL/etc/retroarch.cfg
+  echo "quick_menu_show_undo_save_load_state = \"false\"" >> $INSTALL/etc/retroarch.cfg
+  echo "quick_menu_show_save_core_overrides = \"false\"" >> $INSTALL/etc/retroarch.cfg
+  echo "quick_menu_show_save_game_overrides = \"false\"" >> $INSTALL/etc/retroarch.cfg
+  echo "quick_menu_show_cheats = \"false\"" >> $INSTALL/etc/retroarch.cfg
   
   # Video
   sed -i -e "s/# video_windowed_fullscreen = true/video_windowed_fullscreen = false/" $INSTALL/etc/retroarch.cfg
@@ -169,6 +177,8 @@ makeinstall_target() {
   # Playlists
   echo "playlist_names = \"$RA_PLAYLIST_NAMES\"" >> $INSTALL/etc/retroarch.cfg
   echo "playlist_cores = \"$RA_PLAYLIST_CORES\"" >> $INSTALL/etc/retroarch.cfg
+  echo "playlist_entry_rename = \"false\"" >> $INSTALL/etc/retroarch.cfg
+  echo "playlist_entry_remove = \"false\"" >> $INSTALL/etc/retroarch.cfg
 
   # Gamegirl
   if [ "$PROJECT" == "Gamegirl" ]; then

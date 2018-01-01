@@ -8,12 +8,12 @@
   DISTRONAME="LibreELEC"
 
 # short project description
-  DESCRIPTION="LibreELEC is a fast and user-friendly Kodi media centre distribution."
+  DESCRIPTION="LibreELEC is a fast and user-friendly Kodi Entertainment Center distribution."
 
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
   GREETING0="##############################################"
-  GREETING1="#                 LibreELEC                  #"
-  GREETING2="#            http://libreelec.tv             #"
+  GREETING1="#                  LibreELEC                 #"
+  GREETING2="#            https://libreelec.tv            #"
   GREETING3="##############################################"
   GREETING4=""
 
@@ -66,11 +66,7 @@
 # for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-<<<<<<< HEAD
-  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU bcm_sta"
-=======
   ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU"
->>>>>>> lakka/Lakka-V2.0
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -134,18 +130,13 @@
 # build and install hfs filesystem utilities (yes / no)
   HFSTOOLS="yes"
 
-<<<<<<< HEAD
-# Windowmanager to use (ratpoison / fluxbox / none)
-  WINDOWMANAGER="none"
-=======
 # Windowmanager to use (fluxbox / none)
   WINDOWMANAGER="fluxbox"
->>>>>>> lakka/Lakka-V2.0
 
 # Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia)
 # Space separated list is supported,
 # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeonsi nvidia"
-  GRAPHIC_DRIVERS="nvidia-legacy"
+  GRAPHIC_DRIVERS="r300 r600 radeonsi i915 i965 nvidia nvidia-legacy vmware"
 
 # build and install remote support (yes / no)
   REMOTE_SUPPORT="yes"
@@ -162,22 +153,6 @@
 # build and install iSCSI support - iscsistart (yes / no)
   ISCSI_SUPPORT="yes"
 
-<<<<<<< HEAD
-# LCD driver to Use - Possible drivers are ( Comma seperated:
-# bayrad,CFontz,CFontz633,CFontzPacket,curses,CwLnx,dm140,
-# ea65,EyeboxOne,g15,glcd,glcdlib,glk,hd44780,i2500vfd,
-# icp_a106,imon,imonlcd,IOWarrior,irman,irtrans,
-# joy,lb216,lcdm001,lcterm,lirc,lis,MD8800,mdm166a,
-# ms6931,mtc_s16209x,MtxOrb,mx5000,NoritakeVFD,
-# picolcd,pyramid,sed1330,sed1520,serialPOS,
-# serialVFD,shuttleVFD,sli,stv5730,SureElec,svga,vlsys_m428
-# 'all' compiles all drivers;
-# 'all,!xxx,!yyy' de-selects previously selected drivers
-# "none" for disable LCD support
-  LCD_DRIVER="none"
-
-=======
->>>>>>> lakka/Lakka-V2.0
 # Support for partitioning and formating disks in initramfs (yes / no)
 # This adds support for parted and mkfs.ext3/4 to initramfs for OEM usage
   INITRAMFS_PARTED_SUPPORT="no"
@@ -186,13 +161,13 @@
   SWAP_SUPPORT="yes"
 
 # swap support enabled per default (yes / no)
-  SWAP_ENABLED_DEFAULT="yes"
+  SWAP_ENABLED_DEFAULT="no"
 
 # swapfile size if SWAP_SUPPORT=yes in MB
-  SWAPFILESIZE="512"
+  SWAPFILESIZE="128"
 
 # build with installer (yes / no)
-  INSTALLER_SUPPORT="no"
+  INSTALLER_SUPPORT="yes"
 
 # Testpackages for development (yes / no)
   TESTING="no"
@@ -219,6 +194,5 @@
 
 # Default size of system partition, in MB, eg. 512
   SYSTEM_SIZE=512
-
 # Default system partition offset, in sectors, eg. 2048
-  SYSTEM_PART_START=2048
+  SYSTEM_PART_START=8192

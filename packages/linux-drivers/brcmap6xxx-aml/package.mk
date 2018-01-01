@@ -20,8 +20,8 @@ PKG_NAME="brcmap6xxx-aml"
 PKG_ARCH="arm aarch64"
 PKG_LICENSE="GPL"
 PKG_SITE="http://openlinux.amlogic.com:8000/download/ARM/wifi/"
-PKG_VERSION="1.201.59.5-b82e63f"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_VERSION="de3f5c5"
+PKG_URL="https://github.com/openwetek/brcmap6xxx-aml/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux wlan-firmware-aml"
 PKG_NEED_UNPACK="$LINUX_DEPENDS"
 PKG_SECTION="driver"
@@ -33,21 +33,21 @@ PKG_AUTORECONF="no"
 
 if [ $TARGET_KERNEL_ARCH = "arm64" ] && [ $TARGET_ARCH == "arm"  ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET gcc-linaro-aarch64-elf:host"
-  export PATH=$ROOT/$TOOLCHAIN/lib/gcc-linaro-aarch64-elf/bin/:$PATH
+  export PATH=$TOOLCHAIN/lib/gcc-linaro-aarch64-elf/bin/:$PATH
   TARGET_PREFIX=aarch64-elf-
 fi
 
 make_target() {
   cd bcmdhd_1_201_59_x
   LDFLAGS="" make V=1 \
-    -C $(kernel_path) M=$ROOT/$PKG_BUILD/bcmdhd_1_201_59_x \
+    -C $(kernel_path) M=$PKG_BUILD/bcmdhd_1_201_59_x \
     ARCH=$TARGET_KERNEL_ARCH \
     CROSS_COMPILE=$TARGET_PREFIX
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/lib/modules/$(get_module_dir)/bcmdhd
-  cp *.ko $INSTALL/usr/lib/modules/$(get_module_dir)/bcmdhd
+  mkdir -p $INSTALL/$(get_full_module_dir)/bcmdhd
+  cp *.ko $INSTALL/$(get_full_module_dir)/bcmdhd
 
   mkdir -p $INSTALL/usr/lib/firmware/brcm
   cp $PKG_DIR/config/config.txt $INSTALL/usr/lib/firmware/brcm
