@@ -43,6 +43,9 @@ pre_make_target() {
 
 make_target() {
   case $PROJECT in
+    ATV)
+      make
+      ;;
     RPi|Slice)
       make platform=armv6-hardfloat-arm1176jzf-s
       ;;

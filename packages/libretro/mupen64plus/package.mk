@@ -44,6 +44,9 @@ pre_configure_target() {
 
 make_target() {
   case $PROJECT in
+    ATV)
+      make
+      ;;
     RPi|Gamegirl|Slice)
       CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
 	              -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
