@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="mesa"
-PKG_VERSION="17.1.3"
+PKG_VERSION="17.2.8"
 PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.mesa3d.org/"
@@ -67,7 +67,7 @@ PKG_CONFIGURE_OPTS_TARGET="CC_FOR_BUILD=$HOST_CC \
                            X11_INCLUDES= \
                            DRI_DRIVER_INSTALL_DIR=$XORG_PATH_DRI \
                            DRI_DRIVER_SEARCH_DIR=$XORG_PATH_DRI \
-                           --disable-debug \
+                           --enable-debug \
                            --disable-mangling \
                            --enable-texture-float \
                            --enable-asm \
