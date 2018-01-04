@@ -193,6 +193,13 @@ makeinstall_target() {
     sed -i -e "s/video_smooth = false/video_smooth = true/" $INSTALL/etc/retroarch.cfg
     sed -i -e "s/video_font_path =\/usr\/share\/retroarch-assets\/xmb\/monochrome\/font.ttf//" $INSTALL/etc/retroarch.cfg
   fi
+
+  # ATV
+  if [ "$PROJECT" == "ATV" ]; then
+    #echo "xmb_theme = 3" >> $INSTALL/etc/retroarch.cfg
+    #echo "xmb_menu_color_theme = 9" >> $INSTALL/etc/retroarch.cfg
+    echo "audio_device = \"hw:0,3\"" >> $INSTALL/etc/retroarch.cfg
+  fi
 }
 
 post_install() {  

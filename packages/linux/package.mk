@@ -63,6 +63,11 @@ case "$LINUX" in
     PKG_URL="http://www.kernel.org/pub/linux/kernel/v4.x/$PKG_NAME-$PKG_VERSION.tar.xz"
     PKG_PATCH_DIRS="atv-4.4.13"
     ;;
+  osmc)
+    PKG_VERSION="4.2.3"
+    PKG_URL="http://www.kernel.org/pub/linux/kernel/v4.x/$PKG_NAME-$PKG_VERSION.tar.xz"
+    PKG_PATCH_DIRS="osmc"
+    ;;
   imx6-3.14-sr)
     PKG_VERSION="3.14-sr"
     PKG_COMMIT="2fb11e2"

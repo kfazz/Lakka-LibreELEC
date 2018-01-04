@@ -19,12 +19,12 @@
 ################################################################################
 
 PKG_NAME="ppsspp"
-PKG_VERSION="dd73f91"
+PKG_VERSION="5f7bcf7"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/ppsspp"
-PKG_URL="https://github.com/libretro/ppsspp/archive/$PKG_VERSION.tar.gz"
+PKG_SITE="https://github.com/libretro/libretro-ppsspp"
+PKG_URL="$LAKKA_MIRROR/$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
@@ -40,8 +40,8 @@ pre_configure_target() {
 }
 
 make_target() {
-  cd $PKG_BUILD/libretro
-  if [ "$OPENGLES" == "gpu-viv-bin-mx6q" -o "$OPENGLES" == "imx-gpu-viv" ]; then
+  cd $ROOT/$PKG_BUILD/libretro
+  if [ "$OPENGLES" == "gpu-viv-bin-mx6q" ]; then
     CFLAGS="$CFLAGS -DLINUX -DEGL_API_FB"
     CXXFLAGS="$CXXFLAGS -DLINUX -DEGL_API_FB"
   fi

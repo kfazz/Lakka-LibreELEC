@@ -30,6 +30,9 @@
   # Target Configfile for u-boot
     UBOOT_CONFIGFILE=""
 
+  # Kernel target
+    KERNEL_TARGET="bzImage"
+
   # Kernel target for u-boot (default 'uImage' if BOOTLOADER=u-boot) (uImage / zImage)
     KERNEL_UBOOT_TARGET=""
 
@@ -41,7 +44,9 @@
 
   # Kernel to use. values can be:
   # default:  default mainline kernel
-    LINUX="atv"
+  LINUX="atv"
+  # LINUX="atv"  # 4.4.13
+  # LINUX="osmc" # 4.2.3
 
 
 ################################################################################
@@ -89,7 +94,7 @@
   # Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia)
   # Space separated list is supported,
   # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeonsi nvidia"
-    GRAPHIC_DRIVERS="nvidia-legacy"
+    GRAPHIC_DRIVERS="nvidia-legacy nouveau"
 
   # KODI Player implementation to use (default / bcm2835-driver / libfslvpuwrap)
     KODIPLAYER_DRIVER="default"
@@ -117,6 +122,9 @@
   # build with installer (yes / no)
     INSTALLER_SUPPORT="no"
 
+  # Debugging 
+    DEBUG="yes"
+
   # build debug with valgrind (yes / no)
   # Not available for armv6. Increases image size significantly
     VALGRIND="no"
@@ -136,3 +144,5 @@
 
   # Default system partition offset, in sectors, eg. 2048
     SYSTEM_PART_START=8192
+
+  
