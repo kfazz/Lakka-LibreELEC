@@ -120,7 +120,7 @@
     SWAPFILESIZE="512"
 
   # build with installer (yes / no)
-    INSTALLER_SUPPORT="no"
+    INSTALLER_SUPPORT="yes"
 
   # Debugging 
     DEBUG="no"
