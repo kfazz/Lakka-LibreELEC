@@ -44,8 +44,8 @@
 
   # Kernel to use. values can be:
   # default:  default mainline kernel
-  LINUX="atv"
-  # LINUX="atv"  # 4.4.13
+  # LINUX="default"
+  LINUX="atv"  # 4.14.13
   # LINUX="osmc" # 4.2.3
 
 
@@ -136,7 +136,10 @@
   # for a list of additinoal drivers see packages/linux-drivers
   # Space separated list is supported,
   # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-  # ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS media_build rpi-cirrus-config slice-drivers"
+ 
+ #RTL8812AU broken on 4.14.13
+  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8192EU bcm_sta"
+  ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS applespi"
 
   # override some playlist core assignation
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//pcsx_rearmed/mednafen_psx_hw}"

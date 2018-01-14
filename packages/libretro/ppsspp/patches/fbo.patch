@@ -1,0 +1,13 @@
+diff --git a/libretro/libretro.cpp b/libretro/libretro.cpp
+index e684cfc..9f24937 100644
+--- a/libretro/libretro.cpp
++++ b/libretro/libretro.cpp
+@@ -1,7 +1,7 @@
+ #include "libretro.h"
+ #include "libretro_host.h"
+ 
+-#define NO_FBO 1
++//#define NO_FBO 1
+ 
+ #include "Common/ChunkFile.h"
+ #include "Core/Config.h"
