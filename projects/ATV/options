@@ -123,7 +123,7 @@
     INSTALLER_SUPPORT="no"
 
   # Debugging 
-    DEBUG="yes"
+    DEBUG="no"
 
   # build debug with valgrind (yes / no)
   # Not available for armv6. Increases image size significantly
