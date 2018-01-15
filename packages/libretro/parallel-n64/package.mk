@@ -52,7 +52,7 @@ make_target() {
     make platform=armv-gles-neon
   else
     LDFLAGS="$LDFLAGS -lpthread"
-    make WITH_DYNAREC=$DYNAREC HAVE_PARALLEL=0 HAVE_GLN64=1 HAVE_RICE=1 HAVE_GLIDE64=1 
+    make WITH_DYNAREC=$DYNAREC HAVE_PARALLEL=0
   fi
 }
 
