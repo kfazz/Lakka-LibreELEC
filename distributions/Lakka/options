@@ -84,7 +84,7 @@
 # for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU RTL8192EU bcm_sta"
+  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU RTL8192EU"
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -168,15 +168,13 @@
   if [ "$TARGET_ARCH" = "i386" ]; then
     # TODO: create Legacy build with OpenELEC-4.2
     # install legacy drivers to i386 ARCH
-    GRAPHIC_DRIVERS="nouveau nvidia-legacy swrast"
-#    GRAPHIC_DRIVERS="nouveau"
-#    GRAPHIC_DRIVERS="nvidia-legacy"
+    GRAPHIC_DRIVERS="r200 r300 r600 i915 i965 nouveau"
   elif [ "$TARGET_ARCH" = "x86_64" ]; then
     GRAPHIC_DRIVERS="r300 r600 radeonsi i915 i965 nouveau"
   fi
 
 # build and install remote support (yes / no)
-  REMOTE_SUPPORT="yes"
+  REMOTE_SUPPORT="no"
 
 # build and install ATV IR remote support (yes / no)
   ATVCLIENT_SUPPORT="no"
@@ -208,19 +206,19 @@
 
 # Support for partitioning and formating disks in initramfs (yes / no)
 # This adds support for parted and mkfs.ext3/4 to initramfs for OEM usage
-  INITRAMFS_PARTED_SUPPORT="yes"
+  INITRAMFS_PARTED_SUPPORT="no"
 
 # build with swap support (yes / no)
-  SWAP_SUPPORT="yes"
+  SWAP_SUPPORT="no"
 
 # swap support enabled per default (yes / no)
-  SWAP_ENABLED_DEFAULT="yes"
+  SWAP_ENABLED_DEFAULT="no"
 
 # swapfile size if SWAP_SUPPORT=yes in MB
-  SWAPFILESIZE="512"
+  SWAPFILESIZE="256"
 
 # build with installer (yes / no)
-  INSTALLER_SUPPORT="no"
+  INSTALLER_SUPPORT="yes"
 
 # Testpackages for development (yes / no)
   TESTING="no"
