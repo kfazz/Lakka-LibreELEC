@@ -31,7 +31,7 @@ PKG_AUTORECONF="no"
 
 PKG_IS_ADDON="yes"
 PKG_ADDON_TYPE="kodi.audiodecoder"
-PKG_ADDON_PROJECTS="ATV Generic RPi2 imx6 WeTek_Play"
+PKG_ADDON_PROJECTS="Generic Nvidia_Legacy RPi2 imx6 WeTek_Play"
 
 addon() {
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/
