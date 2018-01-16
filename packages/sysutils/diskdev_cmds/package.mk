@@ -41,8 +41,11 @@ pre_make_target() {
 makeinstall_target() {
   mkdir -p $INSTALL/usr/sbin
     cp fsck_hfs.tproj/fsck_hfs $INSTALL/usr/sbin
-      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
-      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
+    cp newfs_hfs.tproj/newfs_hfs $INSTALL/usr/sbin
+    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
+    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
+    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfs
+    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfsplus
 }
 
 make_init() {
@@ -52,6 +55,9 @@ make_init() {
 makeinstall_init() {
   mkdir -p $INSTALL/usr/sbin
     cp fsck_hfs.tproj/fsck_hfs $INSTALL/usr/sbin
-      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
-      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
+    cp newfs_hfs.tproj/newfs_hfs $INSTALL/usr/sbin
+    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
+    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
+    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfs
+    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfsplus
 }
