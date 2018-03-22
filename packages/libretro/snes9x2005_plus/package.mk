@@ -18,28 +18,25 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="odroidxu3-mali-headers"
-PKG_VERSION="01"
+PKG_NAME="snes9x2005_plus"
+PKG_VERSION="8ca47fd"
 PKG_REV="1"
 PKG_ARCH="any"
-PKG_LICENSE="nonfree"
-PKG_SITE="https://github.com/linux-sunxi/sunxi-mali"
-PKG_URL="$LAKKA_MIRROR/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_BUILD_DEPENDS_TARGET="toolchain"
-PKG_DEPENDS_TARGET=""
+PKG_LICENSE="Non-commercial"
+PKG_SITE="https://github.com/libretro/snes9x2005"
+PKG_GIT_URL="$PKG_SITE"
+PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
-PKG_SECTION="graphics"
-PKG_SHORTDESC="MALI headers for XU3."
-PKG_LONGDESC="MALI headers for XU3."
+PKG_SECTION="libretro"
+PKG_SHORTDESC="Snes9x 2005 Plus."
+PKG_LONGDESC="Snes9x 2005 Plus. Port of SNES9x 1.43 for libretro (was previously called CAT SFC) with enabled BLARRG APU."
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-make_target() {
-  :
-}
+PKG_MAKE_OPTS_TARGET="USE_BLARGG_APU=1"
 
 makeinstall_target() {
-  mkdir -p $SYSROOT_PREFIX/usr/include
-    cp -PR usr/include/* $SYSROOT_PREFIX/usr/include
+  mkdir -p $INSTALL/usr/lib/libretro
+  cp snes9x2005_plus_libretro.so $INSTALL/usr/lib/libretro/
 }
