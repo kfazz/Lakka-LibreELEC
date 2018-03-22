@@ -43,15 +43,9 @@
   UPDATE_ROOT=/storage/.update
   UPDATE_DIR="$UPDATE_ROOT"
 
-if [ -f "/flash/com.apple.Boot.plist" ] && [ -f "/flash/boot.efi" ]; then
-  UPDATE_KERNEL="MACH_KERNEL"
-  IMAGE_KERNEL="MACH_KERNEL"
-else
   UPDATE_KERNEL="KERNEL"
-  IMAGE_KERNEL="KERNEL"
-fi
-
   UPDATE_SYSTEM="SYSTEM"
+  IMAGE_KERNEL="KERNEL"
   IMAGE_SYSTEM="SYSTEM"
 
   BOOT_STEP="start"
@@ -477,23 +471,6 @@ fi
     umount /sysroot
   }
 
-  hfsdiskprep() {
-     for DEVICE in $(/usr/bin/busybox blkid /dev/sd* | grep $boot | sed -e "s|:||g"); do
-       for device in $(/usr/bin/busybox blkid $DEVICE); do
-         case $device in
-           TYPE=*)
-             FS_TYPE=${device#TYPE=}
-             ;;
-         esac
-       done
-
-       if [ "$FS_TYPE" = "\"hfs\"" -o "$FS_TYPE" = "\"hfsplus\"" ]; then
-         progress "check filesystem $DEVICE [$FS_TYPE]..."
-         /usr/sbin/fsck_hfs -r -y $DEVICE >&$SILENT_OUT 2>&1
-       fi
-     done
-  }
-
   load_modules() {
     progress "Loading kernel modules"
 
@@ -630,11 +607,6 @@ fi
   check_disks() {
     if [ "$RUN_FSCK" = "yes" -a -n "$RUN_FSCK_DISKS" ]; then
       progress "Checking disk(s): $RUN_FSCK_DISKS"
-      /usr/sbin/fsck -T -M -p -a $RUN_FSCK_DISKS > /dev/null 2>&1
-      if [ -x /usr/sbin/fsck_hfs ]; then
-        # deal with hfs partitions
-        hfsdiskprep
-      fi
       /usr/sbin/fsck -T -M -p -a $RUN_FSCK_DISKS > /dev/null 2>&1
       FSCK_RET="$?"
 
@@ -912,10 +884,6 @@ fi
 
     sync
 
-    if [ -f "/flash/com.apple.Boot.plist" -a -f "/flash/boot.efi" ]; then
-      UPDATE_KERNEL="MACH_KERNEL"
-    fi
-
     if [ ! -f "$UPDATE_DIR/$UPDATE_KERNEL" -o ! -f "$UPDATE_DIR/$UPDATE_SYSTEM" ] ; then
       echo "Missing ${UPDATE_KERNEL} or ${UPDATE_SYSTEM}!"
       do_cleanup
@@ -1059,8 +1027,6 @@ fi
   debug_msg "Unique identifier for this client: ${MACHINE_UID:-NOT AVAILABLE}"
 
   # main boot sequence
- #     update_syslinux \
-
   for BOOT_STEP in \
       load_modules \
       check_disks \
