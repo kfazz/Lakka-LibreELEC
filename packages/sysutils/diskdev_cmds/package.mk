@@ -18,13 +18,11 @@
 
 PKG_NAME="diskdev_cmds"
 PKG_VERSION="332.14"
-PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="APSL"
 PKG_SITE="http://src.gnu-darwin.org/DarwinSourceArchive/expanded/diskdev_cmds/"
 PKG_URL="http://www.opensource.apple.com/tarballs/diskdev_cmds/$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain openssl"
-PKG_DEPENDS_INIT="toolchain openssl diskdev_cmds"
 PKG_SECTION="system"
 PKG_SHORTDESC="diskdev_cmds: hfs filesystem utilities"
 PKG_LONGDESC="The fsck and mkfs utliities for hfs and hfsplus filesystems."
@@ -41,23 +39,10 @@ pre_make_target() {
 makeinstall_target() {
   mkdir -p $INSTALL/usr/sbin
     cp fsck_hfs.tproj/fsck_hfs $INSTALL/usr/sbin
-    cp newfs_hfs.tproj/newfs_hfs $INSTALL/usr/sbin
-    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
-    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
-    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfs
-    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfsplus
+      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
+      ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
 }
 
 make_init() {
   : # we reuse make_target()
-}
-
-makeinstall_init() {
-  mkdir -p $INSTALL/usr/sbin
-    cp fsck_hfs.tproj/fsck_hfs $INSTALL/usr/sbin
-    cp newfs_hfs.tproj/newfs_hfs $INSTALL/usr/sbin
-    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfs
-    ln -sf fsck_hfs $INSTALL/usr/sbin/fsck.hfsplus
-    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfs
-    ln -sf newfs_hfs $INSTALL/usr/sbin/mkfs.hfsplus
 }

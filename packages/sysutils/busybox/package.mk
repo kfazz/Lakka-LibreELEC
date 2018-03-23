@@ -17,8 +17,7 @@
 ################################################################################
 
 PKG_NAME="busybox"
-PKG_VERSION="1.24.2"
-PKG_REV="1"
+PKG_VERSION="1.25.1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.busybox.net"
@@ -26,7 +25,6 @@ PKG_URL="http://busybox.net/downloads/$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_DEPENDS_HOST=""
 PKG_DEPENDS_TARGET="toolchain busybox:host hdparm dosfstools e2fsprogs zip unzip pciutils usbutils parted procps-ng gptfdisk"
 PKG_DEPENDS_INIT="toolchain"
-PKG_PRIORITY="required"
 PKG_SECTION="system"
 PKG_SHORTDESC="BusyBox: The Swiss Army Knife of Embedded Linux"
 PKG_LONGDESC="BusyBox combines tiny versions of many common UNIX utilities into a single small executable. It provides replacements for most of the utilities you usually find in GNU fileutils, shellutils, etc. The utilities in BusyBox generally have fewer options than their full-featured GNU cousins; however, the options that are included provide the expected functionality and behave very much like their GNU counterparts. BusyBox provides a fairly complete environment for any small or embedded system."
@@ -156,12 +154,12 @@ makeinstall_host() {
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/bin
+    [ $TARGET_ARCH = x86_64 ] && cp $PKG_DIR/scripts/getedid $INSTALL/usr/bin
     cp $PKG_DIR/scripts/createlog $INSTALL/usr/bin/
     cp $PKG_DIR/scripts/lsb_release $INSTALL/usr/bin/
     cp $PKG_DIR/scripts/apt-get $INSTALL/usr/bin/
     cp $PKG_DIR/scripts/passwd $INSTALL/usr/bin/
     cp $PKG_DIR/scripts/sudo $INSTALL/usr/bin/
-    ln -sf /bin/busybox $INSTALL/usr/bin/env          #/usr/bin/env is needed for most python scripts
     cp $PKG_DIR/scripts/pastebinit $INSTALL/usr/bin/
     ln -sf pastebinit $INSTALL/usr/bin/paste
 
@@ -192,10 +190,6 @@ makeinstall_target() {
   # create /etc/hostname
     ln -sf /proc/sys/kernel/hostname $INSTALL/etc/hostname
 
-  # systemd wants /usr/bin/mkdir
-    mkdir -p $INSTALL/usr/bin
-      ln -sf /bin/busybox $INSTALL/usr/bin/mkdir
-
   # add webroot
     mkdir -p $INSTALL/usr/www
       echo "It works" > $INSTALL/usr/www/index.html
@@ -219,7 +213,7 @@ post_install() {
 
   enable_service debug-shell.service
   enable_service shell.service
-  enable_service show-version.service
+  #enable_service show-version.service
   enable_service var.mount
   enable_service var-log-debug.service
   enable_service fs-resize.service
@@ -245,8 +239,12 @@ makeinstall_init() {
     touch $INSTALL/etc/fstab
     ln -sf /proc/self/mounts $INSTALL/etc/mtab
 
-  if [ -f $PROJECT_DIR/$PROJECT/initramfs/platform_init ]; then
+  if [ -n "$DEVICE" -a -f $PROJECT_DIR/$PROJECT/devices/$DEVICE/initramfs/platform_init ]; then
+    cp $PROJECT_DIR/$PROJECT/devices/$DEVICE/initramfs/platform_init $INSTALL
+  elif [ -f $PROJECT_DIR/$PROJECT/initramfs/platform_init ]; then
     cp $PROJECT_DIR/$PROJECT/initramfs/platform_init $INSTALL
+  fi
+  if [ -f $INSTALL/platform_init ]; then
     chmod 755 $INSTALL/platform_init
   fi
 
