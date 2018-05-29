@@ -19,16 +19,16 @@
 ################################################################################
 
 PKG_NAME="pcsx_rearmed"
-PKG_VERSION="ea4f438"
+PKG_VERSION="b51ade1adcab8db02e4eff5256be2e0b28eacd14"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/pcsx_rearmed"
+PKG_SITE="https://github.com/kfazz/pcsx_rearmed"
 PKG_GIT_URL="$PKG_SITE"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="ARM optimized PCSX fork"
+PKG_SHORTDESC="x86 optimized PCSX re-fork"
 PKG_LONGDESC="PCSX ReARMed is yet another PCSX fork based on the PCSX-Reloaded project, which itself contains code from PCSX, PCSX-df and PCSX-Revolution."
 
 PKG_IS_ADDON="no"
@@ -45,7 +45,9 @@ make_target() {
   elif [ "$ARCH" == "arm" ]; then
     make -f Makefile.libretro HAVE_NEON=0 USE_DYNAREC=1
   else
-    make -f Makefile.libretro
+    ./configure --platform=libretro
+    make USE_DYNAREC=1 PSXREC=1 BUILTIN_GPU=peopsxgl
+      cp libretro.so pcsx_rearmed_libretro.so
   fi
 }
 
