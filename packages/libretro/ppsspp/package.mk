@@ -58,7 +58,11 @@ make_target() {
       SYSROOT_PREFIX=$SYSROOT_PREFIX AS=${CXX} make platform=arm64-neon
     fi
   else
-    make
+    if [ "$ARCH" == "i386" ]; then
+      make TARGET_ARCH=x86
+    else
+      make
+    fi
   fi
 }
 

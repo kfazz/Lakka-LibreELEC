@@ -198,6 +198,7 @@ makeinstall_target() {
     #echo "xmb_theme = 3" >> $INSTALL/etc/retroarch.cfg
     #echo "xmb_menu_color_theme = 9" >> $INSTALL/etc/retroarch.cfg
     echo "audio_device = \"hw:0,3\"" >> $INSTALL/etc/retroarch.cfg
+    echo "video_shared_context = \"true\"" >> $INSTALL/etc/retroarch.cfg
   fi
 }
 
